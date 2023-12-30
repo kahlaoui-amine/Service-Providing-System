@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello PriseRdvController!{% endblock %}
+
+{% block body %}
+
+ {{ include('Layouts/partials/_nav.html.twig') }}
+
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    .container  { justify-content: center; flex-wrap: wrap; display: inline-flex;  grid-gap: 2px 2em;}
+</style>
+
+    
+   </br>
+   </br>
+
+ <div class="container mb-3 form-check">
+
+
+{% for r in Reservations %}
+  {% if r.client==app.user %}
+
+<div class="card text-white bg-secondary mb-3" style="max-width: 20rem;">
+  <div class="card-header">Rdv numero   {{ loop.index }} </div>
+  <div class="card-body">
+      id Reservation: {{ r.id }}</br>
+      Nom client: {{ r.client.Uuid }}</br>
+      Jour: {{ r.jour|date("j F  Y","Europe/Paris") }}</br>
+      Heure: {{ r.heure|date("g:ia")}}</br>
+      Type de survice : {{ r.service.titre }}</br>
+     Fournisseur:{{ r.fournisseur.nom }} {{ r.fournisseur.prenom }}</br>
+      Frais: {{ r.frais }}  €</br>
+    
+
+   <a href="{{ path('app_rdv_edit', {id: r.id }) }}" onclick="return confirm('Est-ce que vous êtes sûr de modifier le RDV ?');" class="btn btn-primary">Modifier</a>
+  
+    {% if r.estHonore==1 %}
+      <a href="{{ path('app_rdv_noter', {id: r.id }) }}"class="btn btn-primary"> Noter </a>
+    {% endif %}
+  
+   <a href="{{ path('app_rdv_delete', {id: r.id  }) }}" onclick="return confirm('Est-ce que vous êtes sûr de supprimer le RDV ?');"class="btn btn-primary">Annuler</a>
+
+   
+
+  </form> 
+
+
+  </div>
+</div>
+</br>
+
+ {% endif %}
+{% endfor %}
+</div>
+{% endblock %}

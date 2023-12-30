@@ -1,0 +1,105 @@
+{% extends 'bases2.html.twig' %}
+{% block body %}
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <a class="navbar-brand" href="#"> <big>Proximity</big> <small>Pro</small> </a>
+            <div class="collapse navbar-collapse" id="navbarColor01">
+            <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="{{ path("app_index_fournisseur") }}">Acceuil
+                <span class="sr-only">(current)</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('app_profile',{'idF': idF })}}">Profil</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path("app_index_fournisseur") }}">Deconnexion</a>
+            </li>
+            
+            </ul>
+            
+        </div>
+        </nav>
+        <ul class="nav nav-pills flex-column">
+       <li class="nav-item">
+            <a class="nav-link" href="{{ path('app_fullCalendar',{'idFournisseur': idF })}}">Consulter mon calendrier</a>
+        </li>
+
+        <li class="nav-item">
+            
+            <a class="nav-link" href="{{ path('app_affiche_reservation',{'idF': idF })}}">Rechercher de reservations</a>
+        </li>
+       
+        </ul>
+<div style="height:70%; width: 60%; margin-left:20%">
+<h3> Nombre total de rdvs : <b>{{ total }}</b></h3>
+{{ form_start(periode) }}
+  <div class="form-row align-items-end">
+    <div class="col">
+     {{ form_widget(periode) }} 
+    </div>
+  </div>
+  {{ form_end(periode) }}
+  
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Date</th>
+      <th scope="col">Heure Debut</th>
+      <th scope="col">Heure Fin</th>
+      <th scope="col">Etat</th>
+       <th scope="col">RDV honoré ?</th>
+      <th scope="col">Client</th>
+    </tr>
+  </thead>
+  <tbody>
+      {% if rdvs |length > 0 %}   
+        <h4> Nombre de rdvs correspondant à votre recherche : <b>{{ nbrecherche }}</b></h4>
+          {% for rdv in rdvs %}
+              <tr>
+                  <td>{{ rdv.jour|date('Y-m-d') }}</td>
+                  <td>{{ rdv.start }}</td>
+                  <td>{{ rdv.end }}</td>
+                  <td>{{ rdv.etat }}</td>
+
+                  {% if rdv.etat |lower == 'passé' %}
+                      {% if rdv.honore == '' %}
+                        <td><form action="" methode="post" ><button type="button" class="btn btn-success" name="HONORE" value="true"><a href="{{ path('app_change_honore_oui', { 'idF': idF , 'idR':rdv.id }) }} style="color: white; text-decoration: none;">Oui</a></button><button type="button" class="btn btn-danger" name="HONORE" value="false"><a href="{{ path('app_change_honore_non', { 'idF': idF , 'idR':rdv.id }) }}" style="color: white; text-decoration: none;">Non</a></button></form></td>
+                      {% else %}
+                        <td>{{ rdv.honore }}</td>
+                      {% endif %}
+                  {% else %}
+                      <td><div class="alert alert-dismissible alert-secondary">
+                            A vérifier prochainement</div></td>
+                  {% endif %}
+                  <td>{{ rdv.client }}</td>
+              </tr>
+          {% endfor %}
+      {% else %}
+            {% for reservation in reservations %}
+              <tr>
+                  <td>{{ reservation.jour|date('Y-m-d') }}</td>
+                  <td>{{ reservation.start }}</td>
+                  <td>{{ reservation.end }}</td>
+                  <td>{{ reservation.etat }}</td>
+                  
+                    {% if reservation.etat |lower == 'passé' %}
+                      {% if reservation.honore == '' %}
+                        <td><form action="" methode="post" ><button type="button" class="btn btn-success" name="HONORE" value="true"><a href="{{ path('app_change_honore_oui', { 'idF': idF , 'idR':reservation.id }) }}" style="color: white; text-decoration: none;">Oui</a></button><button type="button" class="btn btn-danger" name="HONORE" value="false"><a href="{{ path('app_change_honore_non', { 'idF': idF , 'idR':reservation.id }) }}" style="color: white; text-decoration: none;">Non</a></button></form></td>
+                      {% else %}
+                        <td>{{ reservation.honore }}</td>
+                      {% endif %}
+                    {% else %}
+                        <td><div class="alert alert-dismissible alert-secondary">
+                             A vérifier prochainement</div></td>
+                    {% endif %}
+
+                  <td>{{ reservation.client }}</td>
+              </tr>
+          {% endfor %}
+        {% endif %}
+    </tbody>
+</table>
+</div>
+{% endblock %}

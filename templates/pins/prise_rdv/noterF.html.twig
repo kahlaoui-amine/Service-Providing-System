@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Avis '  %}
+
+{% block body %}
+
+ {{ include('Layouts/partials/_nav.html.twig') }}
+
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    .container  { justify-content: center; flex-wrap: wrap; display: inline-flex;  grid-gap: 2px 2em;}
+</style>
+<h1 class="d-grid gap-10 col-5 mx-auto"><B>Votre avis nous intéresse </B></h1></br>
+  <div  class="d-grid gap-10 col-5 mx-auto" >
+    {{ form_start(form) }}
+   
+     {{ form_row(form.problemeRDV,{'attr':{'label': "votre nom"}}) }}
+     {{ form_row(form.prixService,{'attr':{'label': "votre nom"}}) }}
+     {{ form_row(form.niveauSatisfaction,{'attr':{'label': "votre nom"}}) }}
+     {{ form_row(form.utiliszerService,{'attr':{'label': "votre nom"}}) }}
+     {{ form_row(form.commentaire,{'attr':{'label': "votre nom"}}) }}
+
+
+    </div>
+    <div class="d-grid gap-2 col-5 mx-auto" data-aos="fade-up" data-aos-delay="0">
+    <button type="submit" class="btn btn-primary">Valider</button>
+      </div>
+    {{ form_end(form) }}
+
+   <!--ici fomulaire pour payer son frai de modification-->
+{% endblock %}
